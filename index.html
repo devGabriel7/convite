@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello you</title>
+    <link rel="shortcut icon" href="imagens/gg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            
+        }
+        body{
+            background-image: url(imagens/sol.jpg) ;
+            background-repeat: no-repeat ;
+            background-size: 100vw  100%;
+            background-attachment: fixed;
+            background-position:  center;
+            
+        }
+
+        /* Conteúdo Principal */
+       
+         #conteudo1 {
+          text-align: center;
+         }
+        h1 {
+            color: black;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+          
+            left: 400px;
+        }
+       
+       
+       
+
+        .btn {
+            background-color: #f50505d5;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+          
+        }
+
+        .btn:hover {
+            background-color: #D00202;
+        }
+
+        /* Botão não estático */
+        .btn-position {
+           
+        }
+
+        #meu-player {
+            width: 60%;
+            max-width: 300px;
+            background: #ff030300;
+            padding: 25px;
+            border-radius: 5px;
+            color: rgba(255, 255, 255, 0.575);
+            text-align: center;
+            margin-top: 20px;
+
+
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    background: rgba(141, 224, 9, 0.027);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgba(124, 156, 50, 0.562);
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+       
+    
+
+        #play-btn {
+            background: white;
+            color: #0353ff;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 7px;
+            cursor: pointer;
+            width: 97px;
+           height: 44px;
+           
+           background-position: right center;
+          
+        }
+
+        /* ANIMAÇÃO BATIDA DE CORAÇÃO */
+        .pulsando {
+            animation: pulsar 1.2s infinite ease-in-out;
+            display: block;
+            margin: 30px auto;
+            max-width: 300px;
+        }
+
+        @keyframes pulsar {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .btn {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+
+            #meu-player {
+                width: 35%;
+            }
+
+            .pulsando {
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            #meu-player {
+                padding: 20px;
+                width: 1000px;
+            }
+
+            .pulsando {
+                max-width: 180px;
+            }
+        }
+     
+
+    </style>
+</head>
+<body>
+
+        <main>
+            <div id="conteudo1">
+                <h1>Aceita ir  ao cinema  comigo?</h1>
+                <div class="botoes">
+                    <button class="btn" onclick="sim()">SIM</button>
+                    <button class="btn" onclick="desvia(this)" onmouseover="desvia(this)">NÃO</button>
+                </div>
+            </div>
+            
+            <!-- IMAGEM COM BATIDA DE CORAÇÃO -->
+            <img src="imagens/Captura_de_tela-2025-04-19-removebg.png" alt="" class="pulsando">
+            <div id="meu-player">
+                <p style="color: #2355dd;" >🎵 Tocar música</p>
+                <button  id="play-btn" >▶️ Tocar</button>
+                <audio id="audio" src="midia/Trendformusic🤍🇲🇺_7301787242425535749.mp3" loop ></audio>
+            </div>
+        </main>
+    
+
+    <script>
+        function sim() {    
+            alert("Você aceitou Sair comigo! :) ❤️");
+            location.href = "https://youtu.be/cfJ4_bucHQk?si=Kviofe3iSe0lhx20";
+        }
+
+        function desvia(btn) {
+            btn.style.position = 'absolute';
+            btn.style.top = geraPosicao(10, 92);
+            btn.style.left = geraPosicao(10, 92);
+            console.log('opa, desviei...');
+        }
+
+        function geraPosicao(min, max) {
+            return (Math.random() * (max - min) + min) + "%";
+        }
+
+        // Controle do player de áudio
+        const btn = document.getElementById('play-btn');
+        const audio = document.getElementById('audio');
+
+        btn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                btn.textContent = '⏸️ Pausar';
+            } else {
+                audio.pause();
+                btn.textContent = '▶️ Tocar';
+            }
+        });
+    </script>
+   
+</body>
+</html>
