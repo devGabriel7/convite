@@ -1,26 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello you</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="imagens/ggicon2.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-    <link rel="stylesheet" href="estilo/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="estilo/style.css">
+<link rel="shortcut icon" href="imagens/ggicon2.png" type="image/x-icon">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+<title>Hello you</title>
+
+
+<style>
+/* Container corações de fundo */
+.container-coracoes {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* Corações de fundo */
+.coracao {
+    position: absolute;
+    bottom: 0;
+    font-size: 24px;
+    color: #ff4d6d;
+    opacity: 0;
+}
+
+/* Corações do botão */
+.coracao-btn {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    color: #fff;
+}
+
+/* Letras do título */
+.titulo span {
+    display: inline-block;
+    opacity: 0;
+}
+
+/* Para garantir que conteúdo fique visível */
+#conteudo1 {
+    position: relative;
+    z-index: 1;
+}
+
+
+</style>
 </head>
 <body>
 
 <main>
-    <div id="conteudo1" data-aos="fade-down" data-aos-delay="1500" data-aos-duration="1000">
-        <h1>Aceita ir ao cinema comigo?</h1>
+    <div id="conteudo1" data-aos="fade-left" data-aos-delay="1500" data-aos-duration="1000">
+        <h1 class="titulo">Aceita ir ao cinema comigo?</h1>
         <div class="botoes">
             <button class="btn" onclick="sim()">SIM</button>
             <button class="btn" onclick="desvia(this)" onmouseover="desvia(this)">NÃO</button>
         </div>
     </div>
-    
-    <!-- IMAGEM COM BATIDA DE CORAÇÃO -->
+
     <img src="imagens/Captura_de_tela-2025-04-19-removebg.png" alt="" class="pulsando">
 
     <div id="meu-player">
@@ -30,42 +74,113 @@
     </div>
 </main>
 
-<script>
-    function sim() {    
-        alert("Você aceitou sair comigo! :) ❤️");
-        location.href = "https://youtu.be/cfJ4_bucHQk?si=Kviofe3iSe0lhx20";
-    }
+<div class="container-coracoes"></div>
 
-    function desvia(btn) {
-        btn.style.position = 'absolute';0
-        btn.style.top = geraPosicao(10, 92);
-        btn.style.left = geraPosicao(10, 92);
-        console.log('opa, desviei...');
-    }
-
-    function geraPosicao(min, max) {
-        return (Math.random() * (max - min) + min) + "%";
-    }
-
-    // Controle do player de áudio
-    const btn = document.getElementById('play-btn');
-    const audio = document.getElementById('audio');
-
-    btn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            btn.textContent = '⏸️ Pausar';
-        } else {
-            audio.pause();
-            btn.textContent = '▶️ Tocar';
-        }
-    });
-</script>
-
-<!-- AOS Scripts -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
 <script>
-    AOS.init();
+// ======= Funções de botões =======
+function sim() {    
+    alert("Você aceitou sair comigo! :) ❤️");
+    location.href = "https://youtu.be/cfJ4_bucHQk?si=Kviofe3iSe0lhx20";
+}
+
+function desvia(btn) {
+    btn.style.position = 'absolute';
+    btn.style.top = geraPosicao(10, 92);
+    btn.style.left = geraPosicao(10, 92);
+}
+
+function geraPosicao(min, max) {
+    return (Math.random() * (max - min) + min) + "%";
+}
+
+// Player de áudio
+const btn = document.getElementById('play-btn');
+const audio = document.getElementById('audio');
+btn.addEventListener('click', () => {
+    if (audio.paused) { audio.play(); btn.textContent = '⏸️ Pausar'; }
+    else { audio.pause(); btn.textContent = '▶️ Tocar'; }
+});
+
+// ======= AOS =======
+AOS.init();
+
+// ======= Corações de fundo =======
+const container = document.querySelector(".container-coracoes");
+function criarCoracao() {
+    const coracao = document.createElement("span");
+    coracao.classList.add("coracao");
+    coracao.innerHTML = "❤️";
+    coracao.style.left = Math.random() * 100 + "vw";
+    coracao.style.fontSize = (20 + Math.random() * 30) + "px";
+    container.appendChild(coracao);
+
+    anime({
+        targets: coracao,
+        translateY: -window.innerHeight - 100,
+        opacity: [0,1,0],
+        duration: 4000 + Math.random()*2000,
+        easing: "easeInOutQuad",
+        complete: () => coracao.remove()
+    });
+}
+setInterval(criarCoracao, 600);
+
+// ======= Letra por letra da esquerda para direita =======
+const titulo = document.querySelector(".titulo");
+titulo.innerHTML = titulo.textContent.replace(/\S/g, "<span>$&</span>");
+const letras = document.querySelectorAll(".titulo span");
+letras.forEach(l => l.style.opacity = 0);
+
+anime.timeline()
+.add({
+    targets: ".titulo span",
+    opacity: [0,1],
+    duration: 800,
+    delay: anime.stagger(80),
+    easing: "linear"
+});
+
+// ======= Loop de corações enquanto mouse está no botão SIM =======
+const botaoSim = document.querySelector("button[onclick='sim()']");
+let loopCoracoes;
+
+botaoSim.addEventListener("mouseenter", () => {
+  loopCoracoes = setInterval(() => {
+    criarCoracaoBtn(botaoSim);
+  }, 200);
+});
+
+botaoSim.addEventListener("mouseleave", () => { 
+  clearInterval(loopCoracoes); 
+});
+
+function criarCoracaoBtn(botao) {
+  const coracao = document.createElement("span");
+  coracao.classList.add("coracao-btn");
+  coracao.innerHTML = "🤍";
+  document.body.appendChild(coracao);
+
+  // pega posição do botão
+  const rect = botao.getBoundingClientRect();
+  coracao.style.left = rect.left + rect.width/2 + "px"; // centro do botão
+  coracao.style.top  = rect.top + rect.height/2 + "px"; // centro do botão
+
+  anime({
+    targets: coracao,
+    translateX: (Math.random() - 0.5) * 80, // espalha horizontal
+    translateY: (Math.random() - 1) * 150, // sobe
+    opacity: [1, 0],
+    scale: [0.6, 1.5],
+    duration: 1500 + Math.random() * 500,
+    easing: "easeOutCubic",
+    complete: () => coracao.remove()
+  });
+}
+
+
 </script>
 
 </body>
